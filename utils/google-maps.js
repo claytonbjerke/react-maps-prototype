@@ -11,7 +11,7 @@ export default {
     } else {
       if (!this.appended) {
         window.mapsCallbacks = this.mapsCallbacks.bind(this);
-        this.appendScript();
+        this.appendScript(params);
       }
     }
     return index;
@@ -35,7 +35,8 @@ export default {
     this.appended = true;
   },
 
-  getSrc() {
+  getSrc(params) {
+    console.log(params)
     let src = 'https://maps.googleapis.com/maps/api/js';
     src += '?key=AIzaSyDMPAw1ZOUSv9T5nf9_nHVhjT0NT99Vl0U&callback=mapsCallbacks';
     return src;

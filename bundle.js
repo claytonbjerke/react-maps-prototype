@@ -70,11 +70,12 @@
 	      null,
 	      'hi lol',
 	      React.createElement(_cbGoogleMaps2.default, {
-	        width: '800px',
-	        height: '600px',
+	        width: '400px',
+	        height: '300px',
 	        lat: coords.lat,
 	        lng: coords.lng,
-	        zoom: 12 })
+	        zoom: 12,
+	        params: { v: '3.exp' } })
 	    );
 	  }
 	});
@@ -88,7 +89,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(2);
@@ -106,44 +107,72 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var CBGoogleMaps = _react2.default.createClass({
-	  displayName: 'CBGoogleMaps',
+	    displayName: 'CBGoogleMaps',
 
 
-	  map: null,
+	    map: null,
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      isMapCreated: false
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.setState({
-	      callbackIndex: _googleMaps2.default.load(null, this.mapsCallbacks)
-	    });
-	  },
-	  mapsCallbacks: function mapsCallbacks() {
-	    this.createMap();
-	  },
-	  createMap: function createMap() {
-	    var node = _reactDom2.default.findDOMNode(this);
-	    this.map = new google.maps.Map(node, {
-	      //...this.props,
-	      center: new google.maps.LatLng(this.props.lat, this.props.lng)
-	    });
-	    this.setState({
-	      isMapCreated: true
-	    });
-	    if (this.props.onMapCreated) {
-	      this.props.onMapCreated(this.map);
+	    getInitialState: function getInitialState() {
+	        return {
+	            isMapCreated: false
+	        };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.setState({
+	            callbackIndex: _googleMaps2.default.load(this.props.params, this.mapsCallbacks)
+	        });
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (this.map) {
+	            this.map.setOptions({
+	                //...nextProps,
+	                center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
+	            });
+	        }
+	    },
+	    mapsCallbacks: function mapsCallbacks() {
+	        this.createMap();
+	    },
+	    createMap: function createMap() {
+	        var node = _reactDom2.default.findDOMNode(this);
+	        this.map = new google.maps.Map(node, {
+	            //...this.props,
+	            center: new google.maps.LatLng(this.props.lat, this.props.lng),
+	            zoom: 8
+	        });
+	        this.setState({
+	            isMapCreated: true
+	        });
+	        if (this.props.onMapCreated) {
+	            this.props.onMapCreated(this.map);
+	        }
+	    },
+	    getChildren: function getChildren() {
+	        var _this = this;
+
+	        return _react2.default.Children.map(this.props.children, function (child) {
+	            if (!_react2.default.isValidElement(child)) {
+	                return child;
+	            }
+	            return _react2.default.cloneElement(child, {
+	                ref: child.ref,
+	                map: _this.map
+	            });
+	        });
+	    },
+	    render: function render() {
+
+	        var styles = {
+	            width: this.props.width,
+	            height: this.props.height
+	        };
+
+	        return _react2.default.createElement(
+	            'div',
+	            { style: styles },
+	            this.state.isMapCreated ? this.getChildren() : null
+	        );
 	    }
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      'hi again lol'
-	    );
-	  }
 	});
 
 	exports.default = CBGoogleMaps;
@@ -19771,7 +19800,7 @@
 	    } else {
 	      if (!this.appended) {
 	        window.mapsCallbacks = this.mapsCallbacks.bind(this);
-	        this.appendScript();
+	        this.appendScript(params);
 	      }
 	    }
 	    return index;
@@ -19793,7 +19822,8 @@
 	    document.head.appendChild(script);
 	    this.appended = true;
 	  },
-	  getSrc: function getSrc() {
+	  getSrc: function getSrc(params) {
+	    console.log(params);
 	    var src = 'https://maps.googleapis.com/maps/api/js';
 	    src += '?key=AIzaSyDMPAw1ZOUSv9T5nf9_nHVhjT0NT99Vl0U&callback=mapsCallbacks';
 	    return src;
