@@ -46,24 +46,109 @@
 
 	'use strict';
 
+	var _cbGoogleMaps = __webpack_require__(1);
+
+	var _cbGoogleMaps2 = _interopRequireDefault(_cbGoogleMaps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(159);
 
+
 	var App = React.createClass({
-	    displayName: 'App',
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            null,
-	            'hi lol!'
-	        );
-	    }
+	  displayName: 'App',
+	  render: function render() {
+
+	    var coords = {
+	      lat: 51.5258541,
+	      lng: -0.08040660000006028
+	    };
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      'hi lol',
+	      React.createElement(_cbGoogleMaps2.default, {
+	        width: '800px',
+	        height: '600px',
+	        lat: coords.lat,
+	        lng: coords.lng,
+	        zoom: 12 })
+	    );
+	  }
 	});
 
 	ReactDOM.render(React.createElement(App, null), window.document.getElementById('target'));
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(159);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _googleMaps = __webpack_require__(160);
+
+	var _googleMaps2 = _interopRequireDefault(_googleMaps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CBGoogleMaps = _react2.default.createClass({
+	  displayName: 'CBGoogleMaps',
+
+
+	  map: null,
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      isMapCreated: false
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({
+	      callbackIndex: _googleMaps2.default.load(null, this.mapsCallbacks)
+	    });
+	  },
+	  mapsCallbacks: function mapsCallbacks() {
+	    this.createMap();
+	  },
+	  createMap: function createMap() {
+	    var node = _reactDom2.default.findDOMNode(this);
+	    this.map = new google.maps.Map(node, {
+	      //...this.props,
+	      center: new google.maps.LatLng(this.props.lat, this.props.lng)
+	    });
+	    this.setState({
+	      isMapCreated: true
+	    });
+	    if (this.props.onMapCreated) {
+	      this.props.onMapCreated(this.map);
+	    }
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      'hi again lol'
+	    );
+	  }
+	});
+
+	exports.default = CBGoogleMaps;
+
+/***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -19663,6 +19748,57 @@
 
 	module.exports = __webpack_require__(4);
 
+
+/***/ },
+/* 160 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+
+	  callbacks: [],
+
+	  appended: false,
+
+	  load: function load(params, callback) {
+	    var index = this.callbacks.push(callback);
+	    if (window.google) {
+	      setTimeout(this.fireCallbacks.bind(this));
+	    } else {
+	      if (!this.appended) {
+	        window.mapsCallbacks = this.mapsCallbacks.bind(this);
+	        this.appendScript();
+	      }
+	    }
+	    return index;
+	  },
+	  fireCallbacks: function fireCallbacks() {
+	    this.callbacks.forEach(function (callback) {
+	      return callback();
+	    });
+	    this.callbacks = [];
+	  },
+	  mapsCallbacks: function mapsCallbacks() {
+	    window.mapsCallbacks = undefined;
+	    this.fireCallbacks();
+	  },
+	  appendScript: function appendScript() {
+	    var src = this.getSrc();
+	    var script = document.createElement('script');
+	    script.setAttribute('src', src);
+	    document.head.appendChild(script);
+	    this.appended = true;
+	  },
+	  getSrc: function getSrc() {
+	    var src = 'https://maps.googleapis.com/maps/api/js';
+	    src += '?key=AIzaSyDMPAw1ZOUSv9T5nf9_nHVhjT0NT99Vl0U&callback=mapsCallbacks';
+	    return src;
+	  }
+	};
 
 /***/ }
 /******/ ]);
