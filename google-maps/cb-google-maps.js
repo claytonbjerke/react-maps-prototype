@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import GoogleMaps from './google-maps';
+import MapStyles from './map-styles';
 
 const CBGoogleMaps = React.createClass({
 
@@ -37,6 +38,11 @@ const CBGoogleMaps = React.createClass({
             ...this.props,
             center: new google.maps.LatLng(this.props.lat, this.props.lng)
         });
+
+        this.map.setOptions({
+            styles: MapStyles.subtleGreyscale
+        });
+
         this.setState({
             isMapCreated: true
         });

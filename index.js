@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CBGoogleMaps from './google-maps/cb-google-maps';
-import Marker from './google-maps/marker';
+import Marker from './markers/marker';
 
 import MockCoords from './mock-data/mock-coords';
 
@@ -29,7 +29,6 @@ const App = React.createClass({
     const markers = this.state.markers;
 
     return (
-      <div>
         <CBGoogleMaps
             width={'400px'}
             height={'300px'}
@@ -46,7 +45,6 @@ const App = React.createClass({
                 );
             })}
         </CBGoogleMaps>
-      </div>
     );
   }
 });
