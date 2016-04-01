@@ -46,6 +46,14 @@
 
 	'use strict';
 
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(159);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _cbGoogleMaps = __webpack_require__(1);
 
 	var _cbGoogleMaps2 = _interopRequireDefault(_cbGoogleMaps);
@@ -54,43 +62,57 @@
 
 	var _marker2 = _interopRequireDefault(_marker);
 
+	var _mockCoords = __webpack_require__(162);
+
+	var _mockCoords2 = _interopRequireDefault(_mockCoords);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var React = __webpack_require__(2);
-	var ReactDOM = __webpack_require__(159);
-
-
-	var App = React.createClass({
+	var App = _react2.default.createClass({
 	  displayName: 'App',
+	  getInitialState: function getInitialState() {
+	    return {
+	      center: {
+	        lat: 35.222195,
+	        lng: -97.353287
+	      },
+	      markers: []
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({
+	      markers: _mockCoords2.default.lineSet
+	    });
+	  },
 	  render: function render() {
 
-	    var coords = {
-	      lat: 35.222195,
-	      lng: -97.353287
-	    };
+	    var center = this.state.center;
+	    var markers = this.state.markers;
 
-	    return React.createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      'hi lol',
-	      React.createElement(
+	      _react2.default.createElement(
 	        _cbGoogleMaps2.default,
 	        {
 	          width: '400px',
 	          height: '300px',
-	          lat: coords.lat,
-	          lng: coords.lng,
+	          lat: center.lat,
+	          lng: center.lng,
 	          zoom: 12,
 	          params: { v: '3.exp' } },
-	        React.createElement(_marker2.default, {
-	          lat: coords.lat,
-	          lng: coords.lng })
+	        markers.map(function (marker, index) {
+	          return _react2.default.createElement(_marker2.default, {
+	            key: index,
+	            lat: marker.lat,
+	            lng: marker.lng });
+	        })
 	      )
 	    );
 	  }
 	});
 
-	ReactDOM.render(React.createElement(App, null), window.document.getElementById('target'));
+	_reactDom2.default.render(_react2.default.createElement(App, null), window.document.getElementById('target'));
 
 /***/ },
 /* 1 */
@@ -147,8 +169,7 @@
 	    createMap: function createMap() {
 	        var node = _reactDom2.default.findDOMNode(this);
 	        this.map = new google.maps.Map(node, _extends({}, this.props, {
-	            center: new google.maps.LatLng(this.props.lat, this.props.lng),
-	            zoom: 8
+	            center: new google.maps.LatLng(this.props.lat, this.props.lng)
 	        }));
 	        this.setState({
 	            isMapCreated: true
@@ -19886,6 +19907,57 @@
 	});
 
 	exports.default = Marker;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+
+	    lineSet: [{
+	        lat: 35.222195,
+	        lng: -97.353287
+	    }, {
+	        lat: 35.218137,
+	        lng: -97.352600
+	    }, {
+	        lat: 35.215463,
+	        lng: -97.352943
+	    }, {
+	        lat: 35.211817,
+	        lng: -97.352943
+	    }, {
+	        lat: 35.209012,
+	        lng: -97.352943
+	    }, {
+	        lat: 35.206206,
+	        lng: -97.352943
+	    }, {
+	        lat: 35.203682,
+	        lng: -97.352943
+	    }, {
+	        lat: 35.200315,
+	        lng: -97.352600
+	    }, {
+	        lat: 35.197229,
+	        lng: -97.352600
+	    }, {
+	        lat: 35.193021,
+	        lng: -97.352600
+	    }, {
+	        lat: 35.190496,
+	        lng: -97.352600
+	    }, {
+	        lat: 35.187690,
+	        lng: -97.352257
+	    }]
+
+	};
 
 /***/ }
 /******/ ]);

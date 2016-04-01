@@ -35,8 +35,7 @@ const CBGoogleMaps = React.createClass({
         const node = ReactDOM.findDOMNode(this);
         this.map = new google.maps.Map(node, {
             ...this.props,
-            center: new google.maps.LatLng(this.props.lat, this.props.lng),
-            zoom: 8
+            center: new google.maps.LatLng(this.props.lat, this.props.lng)
         });
         this.setState({
             isMapCreated: true

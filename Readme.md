@@ -3,7 +3,7 @@
 2. webpack (globally)
 
 ## Quick Start:
-1. npm install
+1. npm i
 2. webpack --watch
 
 ## References:
