@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GoogleMaps from '.././utils/google-maps';
+import GoogleMaps from './google-maps';
 
 const CBGoogleMaps = React.createClass({
 
@@ -21,7 +21,7 @@ const CBGoogleMaps = React.createClass({
     componentWillReceiveProps(nextProps) {
         if (this.map) {
             this.map.setOptions({
-                //...nextProps,
+                ...nextProps,
                 center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
             });
         }
@@ -34,7 +34,7 @@ const CBGoogleMaps = React.createClass({
     createMap() {
         const node = ReactDOM.findDOMNode(this);
         this.map = new google.maps.Map(node, {
-            //...this.props,
+            ...this.props,
             center: new google.maps.LatLng(this.props.lat, this.props.lng),
             zoom: 8
         });

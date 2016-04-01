@@ -50,6 +50,10 @@
 
 	var _cbGoogleMaps2 = _interopRequireDefault(_cbGoogleMaps);
 
+	var _marker = __webpack_require__(161);
+
+	var _marker2 = _interopRequireDefault(_marker);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var React = __webpack_require__(2);
@@ -61,21 +65,27 @@
 	  render: function render() {
 
 	    var coords = {
-	      lat: 51.5258541,
-	      lng: -0.08040660000006028
+	      lat: 35.222195,
+	      lng: -97.353287
 	    };
 
 	    return React.createElement(
 	      'div',
 	      null,
 	      'hi lol',
-	      React.createElement(_cbGoogleMaps2.default, {
-	        width: '400px',
-	        height: '300px',
-	        lat: coords.lat,
-	        lng: coords.lng,
-	        zoom: 12,
-	        params: { v: '3.exp' } })
+	      React.createElement(
+	        _cbGoogleMaps2.default,
+	        {
+	          width: '400px',
+	          height: '300px',
+	          lat: coords.lat,
+	          lng: coords.lng,
+	          zoom: 12,
+	          params: { v: '3.exp' } },
+	        React.createElement(_marker2.default, {
+	          lat: coords.lat,
+	          lng: coords.lng })
+	      )
 	    );
 	  }
 	});
@@ -91,6 +101,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _react = __webpack_require__(2);
 
@@ -124,10 +136,9 @@
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (this.map) {
-	            this.map.setOptions({
-	                //...nextProps,
+	            this.map.setOptions(_extends({}, nextProps, {
 	                center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
-	            });
+	            }));
 	        }
 	    },
 	    mapsCallbacks: function mapsCallbacks() {
@@ -135,11 +146,10 @@
 	    },
 	    createMap: function createMap() {
 	        var node = _reactDom2.default.findDOMNode(this);
-	        this.map = new google.maps.Map(node, {
-	            //...this.props,
+	        this.map = new google.maps.Map(node, _extends({}, this.props, {
 	            center: new google.maps.LatLng(this.props.lat, this.props.lng),
 	            zoom: 8
-	        });
+	        }));
 	        this.setState({
 	            isMapCreated: true
 	        });
@@ -19829,6 +19839,53 @@
 	    return src;
 	  }
 	};
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Marker = _react2.default.createClass({
+	  displayName: 'Marker',
+	  getInitialState: function getInitialState() {
+	    return {
+	      props: {}
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({
+	      props: this.props
+	    });
+	  },
+	  setMarkerOnMap: function setMarkerOnMap() {
+	    new google.maps.Marker({
+	      position: {
+	        lat: this.props.lat,
+	        lng: this.props.lng
+	      },
+	      map: this.props.map
+	    });
+	  },
+	  render: function render() {
+
+	    this.setMarkerOnMap();
+
+	    return null;
+	  }
+	});
+
+	exports.default = Marker;
 
 /***/ }
 /******/ ]);

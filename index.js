@@ -1,14 +1,15 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-import CBGoogleMaps from './components/cb-google-maps';
+import CBGoogleMaps from './google-maps/cb-google-maps';
+import Marker from './google-maps/marker';
 
 const App = React.createClass({
 
   render() {
 
     const coords = {
-      lat: 51.5258541,
-      lng: -0.08040660000006028
+      lat: 35.222195,
+      lng: -97.353287
     };
 
     return (
@@ -21,6 +22,9 @@ const App = React.createClass({
             lng={coords.lng}
             zoom={12}
             params={{v: '3.exp'}}>
+            <Marker
+              lat={coords.lat}
+              lng={coords.lng}/>
         </CBGoogleMaps>
       </div>
     );
