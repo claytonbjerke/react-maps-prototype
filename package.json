@@ -16,7 +16,11 @@
     "url": "https://github.com/claytonbjerke/react-maps-prototype/issues"
   },
   "homepage": "https://github.com/claytonbjerke/react-maps-prototype#readme",
+  "engines": {
+    "node": "4.3.0"
+  },
   "dependencies": {
+    "express": "^4.13.4",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7"
