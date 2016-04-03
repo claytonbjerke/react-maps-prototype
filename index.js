@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 
 import CBGoogleMaps from './google-maps/cb-google-maps';
 import Marker from './markers/marker';
+import GoogleNav from './services/google-maps-navigator';
 import MockCoords from './mock-data/mock-coords';
 
 const App = React.createClass({

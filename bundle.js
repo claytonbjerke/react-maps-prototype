@@ -64,7 +64,11 @@
 
 	var _marker2 = _interopRequireDefault(_marker);
 
-	var _mockCoords = __webpack_require__(164);
+	var _googleMapsNavigator = __webpack_require__(164);
+
+	var _googleMapsNavigator2 = _interopRequireDefault(_googleMapsNavigator);
+
+	var _mockCoords = __webpack_require__(165);
 
 	var _mockCoords2 = _interopRequireDefault(_mockCoords);
 
@@ -20366,6 +20370,35 @@
 
 /***/ },
 /* 164 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  myPosition: function myPosition() {
+	    if (navigator.geolocation) {
+
+	      var prom = new Promise();
+
+	      navigator.geolocation.getCurrentPosition(function (position) {
+	        var pos = {
+	          lat: position.coords.latitude,
+	          lng: position.coords.longitude
+	        };
+
+	        return pos;
+	      }, function (err) {
+	        console.log('ERRROOORR!!', err);
+	      });
+	    }
+	  }
+	};
+
+/***/ },
+/* 165 */
 /***/ function(module, exports) {
 
 	"use strict";
