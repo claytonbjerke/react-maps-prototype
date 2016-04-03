@@ -53,8 +53,6 @@ const App = React.createClass({
 
     return (
         <CBGoogleMaps
-            width={'400px'}
-            height={'300px'}
             lat={center.lat}
             lng={center.lng}
             zoom={12}

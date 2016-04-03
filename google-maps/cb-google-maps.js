@@ -71,7 +71,7 @@ const CBGoogleMaps = React.createClass({
         };
 
         return (
-            <div style={styles}>
+            <div style={styles} id={'map'}>
                 {this.state.isMapCreated ? this.getChildren() : null}
             </div>
         );

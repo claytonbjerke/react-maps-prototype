@@ -118,8 +118,6 @@
 	    return _react2.default.createElement(
 	      _cbGoogleMaps2.default,
 	      {
-	        width: '400px',
-	        height: '300px',
 	        lat: center.lat,
 	        lng: center.lng,
 	        zoom: 12,
@@ -8037,6 +8035,10 @@
 	  }
 	};
 
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -8045,7 +8047,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -18768,7 +18770,7 @@
 
 	'use strict';
 
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 147 */
@@ -20138,7 +20140,7 @@
 
 	        return _react2.default.createElement(
 	            'div',
-	            { style: styles },
+	            { style: styles, id: 'map' },
 	            this.state.isMapCreated ? this.getChildren() : null
 	        );
 	    }

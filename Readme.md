@@ -12,7 +12,6 @@
 ## TODO:
 - adjust zoom by marker cluster
 - geocoding service to get user locations?
-- work on mobile
 
 
 ## OLD REFERENCES:
