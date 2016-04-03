@@ -31,13 +31,11 @@ var Marker = React.createClass({
   setOnMarkerMoveListener() {
     let moveMarkerEvent = 'move-marker-event-' + this.props.id;
     this.props.eventEmitter.on(moveMarkerEvent, (coords) => {
-      console.log(this.props.id);
       this.marker.setPosition(new google.maps.LatLng(35.187690, -97.352257));
     });
   },
 
   render() {
-
     return (
       null
     );

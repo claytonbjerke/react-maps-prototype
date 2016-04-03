@@ -54,17 +54,17 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _events = __webpack_require__(165);
+	var _events = __webpack_require__(159);
 
-	var _cbGoogleMaps = __webpack_require__(159);
+	var _cbGoogleMaps = __webpack_require__(160);
 
 	var _cbGoogleMaps2 = _interopRequireDefault(_cbGoogleMaps);
 
-	var _marker = __webpack_require__(162);
+	var _marker = __webpack_require__(163);
 
 	var _marker2 = _interopRequireDefault(_marker);
 
-	var _mockCoords = __webpack_require__(163);
+	var _mockCoords = __webpack_require__(164);
 
 	var _mockCoords2 = _interopRequireDefault(_mockCoords);
 
@@ -121,7 +121,6 @@
 	        zoom: 12,
 	        params: { v: '3.exp' } },
 	      markers.map(function (marker, index) {
-	        console.log(marker);
 	        return _react2.default.createElement(_marker2.default, {
 	          key: index,
 	          id: marker.userId,
@@ -19738,397 +19737,6 @@
 
 /***/ },
 /* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _googleMaps = __webpack_require__(160);
-
-	var _googleMaps2 = _interopRequireDefault(_googleMaps);
-
-	var _mapStyles = __webpack_require__(161);
-
-	var _mapStyles2 = _interopRequireDefault(_mapStyles);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var CBGoogleMaps = _react2.default.createClass({
-	    displayName: 'CBGoogleMaps',
-
-
-	    map: null,
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            isMapCreated: false
-	        };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        this.setState({
-	            callbackIndex: _googleMaps2.default.load(this.props.params, this.mapsCallbacks)
-	        });
-	    },
-	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	        if (this.map) {
-	            this.map.setOptions(_extends({}, nextProps, {
-	                center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
-	            }));
-	        }
-	    },
-	    mapsCallbacks: function mapsCallbacks() {
-	        this.createMap();
-	    },
-	    createMap: function createMap() {
-	        var node = _reactDom2.default.findDOMNode(this);
-	        this.map = new google.maps.Map(node, _extends({}, this.props, {
-	            center: new google.maps.LatLng(this.props.lat, this.props.lng)
-	        }));
-
-	        this.map.setOptions({
-	            styles: _mapStyles2.default.subtleGreyscale
-	        });
-
-	        this.setState({
-	            isMapCreated: true
-	        });
-	        if (this.props.onMapCreated) {
-	            this.props.onMapCreated(this.map);
-	        }
-	    },
-	    getChildren: function getChildren() {
-	        var _this = this;
-
-	        return _react2.default.Children.map(this.props.children, function (child) {
-	            if (!_react2.default.isValidElement(child)) {
-	                return child;
-	            }
-	            return _react2.default.cloneElement(child, {
-	                ref: child.ref,
-	                map: _this.map
-	            });
-	        });
-	    },
-	    render: function render() {
-
-	        var styles = {
-	            width: this.props.width,
-	            height: this.props.height
-	        };
-
-	        return _react2.default.createElement(
-	            'div',
-	            { style: styles },
-	            this.state.isMapCreated ? this.getChildren() : null
-	        );
-	    }
-	});
-
-	exports.default = CBGoogleMaps;
-
-/***/ },
-/* 160 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-
-	  callbacks: [],
-
-	  appended: false,
-
-	  load: function load(params, callback) {
-	    var index = this.callbacks.push(callback);
-	    if (window.google) {
-	      setTimeout(this.fireCallbacks.bind(this));
-	    } else {
-	      if (!this.appended) {
-	        window.mapsCallbacks = this.mapsCallbacks.bind(this);
-	        this.appendScript(params);
-	      }
-	    }
-	    return index;
-	  },
-	  fireCallbacks: function fireCallbacks() {
-	    this.callbacks.forEach(function (callback) {
-	      return callback();
-	    });
-	    this.callbacks = [];
-	  },
-	  mapsCallbacks: function mapsCallbacks() {
-	    window.mapsCallbacks = undefined;
-	    this.fireCallbacks();
-	  },
-	  appendScript: function appendScript() {
-	    var src = this.getSrc();
-	    var script = document.createElement('script');
-	    script.setAttribute('src', src);
-	    document.head.appendChild(script);
-	    this.appended = true;
-	  },
-	  getSrc: function getSrc(params) {
-	    console.log(params);
-	    var src = 'https://maps.googleapis.com/maps/api/js';
-	    src += '?key=AIzaSyDMPAw1ZOUSv9T5nf9_nHVhjT0NT99Vl0U&callback=mapsCallbacks';
-	    return src;
-	  }
-	};
-
-/***/ },
-/* 161 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = {
-
-	    saturatedGreen: [{
-	        stylers: [{
-	            hue: "#00ffe6"
-	        }, {
-	            saturation: -20
-	        }]
-	    }, {
-	        featureType: "road",
-	        elementType: "geometry",
-	        stylers: [{
-	            lightness: 100
-	        }, {
-	            visibility: "simplified"
-	        }]
-	    }, {
-	        featureType: "road",
-	        elementType: "labels",
-	        stylers: [{
-	            visibility: "off"
-	        }]
-	    }],
-
-	    subtleGreyscale: [{
-	        "featureType": "landscape",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "lightness": 65
-	        }, {
-	            "visibility": "on"
-	        }]
-	    }, {
-	        "featureType": "poi",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "lightness": 51
-	        }, {
-	            "visibility": "simplified"
-	        }]
-	    }, {
-	        "featureType": "road.highway",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "visibility": "simplified"
-	        }]
-	    }, {
-	        "featureType": "road.arterial",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "lightness": 30
-	        }, {
-	            "visibility": "on"
-	        }]
-	    }, {
-	        "featureType": "road.local",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "lightness": 40
-	        }, {
-	            "visibility": "on"
-	        }]
-	    }, {
-	        "featureType": "transit",
-	        "stylers": [{
-	            "saturation": -100
-	        }, {
-	            "visibility": "simplified"
-	        }]
-	    }, {
-	        "featureType": "administrative.province",
-	        "stylers": [{
-	            "visibility": "off"
-	        }]
-	    }, {
-	        "featureType": "water",
-	        "elementType": "labels",
-	        "stylers": [{
-	            "visibility": "on"
-	        }, {
-	            "lightness": -25
-	        }, {
-	            "saturation": -100
-	        }]
-	    }, {
-	        "featureType": "water",
-	        "elementType": "geometry",
-	        "stylers": [{
-	            "hue": "#ffff00"
-	        }, {
-	            "lightness": -25
-	        }, {
-	            "saturation": -97
-	        }]
-	    }]
-
-	};
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Marker = _react2.default.createClass({
-	  displayName: 'Marker',
-
-
-	  marker: {},
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      props: {}
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.setState({
-	      props: this.props
-	    });
-	    this.setMarkerOnMap();
-	    this.setOnMarkerMoveListener();
-	  },
-	  setMarkerOnMap: function setMarkerOnMap() {
-	    this.marker = new google.maps.Marker({
-	      position: {
-	        lat: this.props.lat,
-	        lng: this.props.lng
-	      },
-	      map: this.props.map
-	    });
-	  },
-	  setOnMarkerMoveListener: function setOnMarkerMoveListener() {
-	    var _this = this;
-
-	    var moveMarkerEvent = 'move-marker-event-' + this.props.id;
-	    this.props.eventEmitter.on(moveMarkerEvent, function (coords) {
-	      console.log(_this.props.id);
-	      _this.marker.setPosition(new google.maps.LatLng(35.187690, -97.352257));
-	    });
-	  },
-	  render: function render() {
-
-	    return null;
-	  }
-	});
-
-	exports.default = Marker;
-
-/***/ },
-/* 163 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = {
-
-	    lineSet: [{
-	        userId: 1,
-	        lat: 35.222195,
-	        lng: -97.353287
-	    }, {
-	        userId: 2,
-	        lat: 35.218137,
-	        lng: -97.352600
-	    }, {
-	        userId: 3,
-	        lat: 35.215463,
-	        lng: -97.352943
-	    }, {
-	        userId: 4,
-	        lat: 35.211817,
-	        lng: -97.352943
-	    }, {
-	        userId: 5,
-	        lat: 35.209012,
-	        lng: -97.352943
-	    }, {
-	        userId: 6,
-	        lat: 35.206206,
-	        lng: -97.352943
-	    }, {
-	        userId: 7,
-	        lat: 35.203682,
-	        lng: -97.352943
-	    }, {
-	        userId: 8,
-	        lat: 35.200315,
-	        lng: -97.352600
-	    }, {
-	        userId: 9,
-	        lat: 35.197229,
-	        lng: -97.352600
-	    }, {
-	        userId: 10,
-	        lat: 35.193021,
-	        lng: -97.352600
-	    }, {
-	        userId: 11,
-	        lat: 35.190496,
-	        lng: -97.352600
-	    }, {
-	        userId: 12,
-	        lat: 35.187690,
-	        lng: -97.352257
-	    }]
-
-	};
-
-/***/ },
-/* 164 */,
-/* 165 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -20430,6 +20038,394 @@
 	  return arg === void 0;
 	}
 
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _googleMaps = __webpack_require__(161);
+
+	var _googleMaps2 = _interopRequireDefault(_googleMaps);
+
+	var _mapStyles = __webpack_require__(162);
+
+	var _mapStyles2 = _interopRequireDefault(_mapStyles);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CBGoogleMaps = _react2.default.createClass({
+	    displayName: 'CBGoogleMaps',
+
+
+	    map: null,
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            isMapCreated: false
+	        };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.setState({
+	            callbackIndex: _googleMaps2.default.load(this.props.params, this.mapsCallbacks)
+	        });
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (this.map) {
+	            this.map.setOptions(_extends({}, nextProps, {
+	                center: new google.maps.LatLng(nextProps.lat, nextProps.lng)
+	            }));
+	        }
+	    },
+	    mapsCallbacks: function mapsCallbacks() {
+	        this.createMap();
+	    },
+	    createMap: function createMap() {
+	        var node = _reactDom2.default.findDOMNode(this);
+	        this.map = new google.maps.Map(node, _extends({}, this.props, {
+	            center: new google.maps.LatLng(this.props.lat, this.props.lng)
+	        }));
+
+	        this.map.setOptions({
+	            styles: _mapStyles2.default.subtleGreyscale
+	        });
+
+	        this.setState({
+	            isMapCreated: true
+	        });
+	        if (this.props.onMapCreated) {
+	            this.props.onMapCreated(this.map);
+	        }
+	    },
+	    getChildren: function getChildren() {
+	        var _this = this;
+
+	        return _react2.default.Children.map(this.props.children, function (child) {
+	            if (!_react2.default.isValidElement(child)) {
+	                return child;
+	            }
+	            return _react2.default.cloneElement(child, {
+	                ref: child.ref,
+	                map: _this.map
+	            });
+	        });
+	    },
+	    render: function render() {
+
+	        var styles = {
+	            width: this.props.width,
+	            height: this.props.height
+	        };
+
+	        return _react2.default.createElement(
+	            'div',
+	            { style: styles },
+	            this.state.isMapCreated ? this.getChildren() : null
+	        );
+	    }
+	});
+
+	exports.default = CBGoogleMaps;
+
+/***/ },
+/* 161 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+
+	  callbacks: [],
+
+	  appended: false,
+
+	  load: function load(params, callback) {
+	    var index = this.callbacks.push(callback);
+	    if (window.google) {
+	      setTimeout(this.fireCallbacks.bind(this));
+	    } else {
+	      if (!this.appended) {
+	        window.mapsCallbacks = this.mapsCallbacks.bind(this);
+	        this.appendScript(params);
+	      }
+	    }
+	    return index;
+	  },
+	  fireCallbacks: function fireCallbacks() {
+	    this.callbacks.forEach(function (callback) {
+	      return callback();
+	    });
+	    this.callbacks = [];
+	  },
+	  mapsCallbacks: function mapsCallbacks() {
+	    window.mapsCallbacks = undefined;
+	    this.fireCallbacks();
+	  },
+	  appendScript: function appendScript() {
+	    var src = this.getSrc();
+	    var script = document.createElement('script');
+	    script.setAttribute('src', src);
+	    document.head.appendChild(script);
+	    this.appended = true;
+	  },
+	  getSrc: function getSrc(params) {
+	    console.log(params);
+	    var src = 'https://maps.googleapis.com/maps/api/js';
+	    src += '?key=AIzaSyDMPAw1ZOUSv9T5nf9_nHVhjT0NT99Vl0U&callback=mapsCallbacks';
+	    return src;
+	  }
+	};
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+
+	    saturatedGreen: [{
+	        stylers: [{
+	            hue: "#00ffe6"
+	        }, {
+	            saturation: -20
+	        }]
+	    }, {
+	        featureType: "road",
+	        elementType: "geometry",
+	        stylers: [{
+	            lightness: 100
+	        }, {
+	            visibility: "simplified"
+	        }]
+	    }, {
+	        featureType: "road",
+	        elementType: "labels",
+	        stylers: [{
+	            visibility: "off"
+	        }]
+	    }],
+
+	    subtleGreyscale: [{
+	        "featureType": "landscape",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "lightness": 65
+	        }, {
+	            "visibility": "on"
+	        }]
+	    }, {
+	        "featureType": "poi",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "lightness": 51
+	        }, {
+	            "visibility": "simplified"
+	        }]
+	    }, {
+	        "featureType": "road.highway",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "visibility": "simplified"
+	        }]
+	    }, {
+	        "featureType": "road.arterial",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "lightness": 30
+	        }, {
+	            "visibility": "on"
+	        }]
+	    }, {
+	        "featureType": "road.local",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "lightness": 40
+	        }, {
+	            "visibility": "on"
+	        }]
+	    }, {
+	        "featureType": "transit",
+	        "stylers": [{
+	            "saturation": -100
+	        }, {
+	            "visibility": "simplified"
+	        }]
+	    }, {
+	        "featureType": "administrative.province",
+	        "stylers": [{
+	            "visibility": "off"
+	        }]
+	    }, {
+	        "featureType": "water",
+	        "elementType": "labels",
+	        "stylers": [{
+	            "visibility": "on"
+	        }, {
+	            "lightness": -25
+	        }, {
+	            "saturation": -100
+	        }]
+	    }, {
+	        "featureType": "water",
+	        "elementType": "geometry",
+	        "stylers": [{
+	            "hue": "#ffff00"
+	        }, {
+	            "lightness": -25
+	        }, {
+	            "saturation": -97
+	        }]
+	    }]
+
+	};
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Marker = _react2.default.createClass({
+	  displayName: 'Marker',
+
+
+	  marker: {},
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      props: {}
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({
+	      props: this.props
+	    });
+	    this.setMarkerOnMap();
+	    this.setOnMarkerMoveListener();
+	  },
+	  setMarkerOnMap: function setMarkerOnMap() {
+	    this.marker = new google.maps.Marker({
+	      position: {
+	        lat: this.props.lat,
+	        lng: this.props.lng
+	      },
+	      map: this.props.map
+	    });
+	  },
+	  setOnMarkerMoveListener: function setOnMarkerMoveListener() {
+	    var _this = this;
+
+	    var moveMarkerEvent = 'move-marker-event-' + this.props.id;
+	    this.props.eventEmitter.on(moveMarkerEvent, function (coords) {
+	      _this.marker.setPosition(new google.maps.LatLng(35.187690, -97.352257));
+	    });
+	  },
+	  render: function render() {
+	    return null;
+	  }
+	});
+
+	exports.default = Marker;
+
+/***/ },
+/* 164 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+
+	    lineSet: [{
+	        userId: 1,
+	        lat: 35.222195,
+	        lng: -97.353287
+	    }, {
+	        userId: 2,
+	        lat: 35.218137,
+	        lng: -97.352600
+	    }, {
+	        userId: 3,
+	        lat: 35.215463,
+	        lng: -97.352943
+	    }, {
+	        userId: 4,
+	        lat: 35.211817,
+	        lng: -97.352943
+	    }, {
+	        userId: 5,
+	        lat: 35.209012,
+	        lng: -97.352943
+	    }, {
+	        userId: 6,
+	        lat: 35.206206,
+	        lng: -97.352943
+	    }, {
+	        userId: 7,
+	        lat: 35.203682,
+	        lng: -97.352943
+	    }, {
+	        userId: 8,
+	        lat: 35.200315,
+	        lng: -97.352600
+	    }, {
+	        userId: 9,
+	        lat: 35.197229,
+	        lng: -97.352600
+	    }, {
+	        userId: 10,
+	        lat: 35.193021,
+	        lng: -97.352600
+	    }, {
+	        userId: 11,
+	        lat: 35.190496,
+	        lng: -97.352600
+	    }, {
+	        userId: 12,
+	        lat: 35.187690,
+	        lng: -97.352257
+	    }]
+
+	};
 
 /***/ }
 /******/ ]);

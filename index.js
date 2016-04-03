@@ -59,7 +59,6 @@ const App = React.createClass({
             zoom={12}
             params={{v: '3.exp'}}>
             {markers.map((marker, index) => {
-              console.log(marker);
               return (
                     <Marker
                       key={index}
